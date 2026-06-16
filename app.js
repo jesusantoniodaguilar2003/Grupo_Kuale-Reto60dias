@@ -24,13 +24,13 @@ const db = getFirestore(firebaseApp);
 const DEFAULT_HABITS = [
   { icon: "💧", name: "Tomar 2L de agua" },
   { icon: "🏃", name: "30 min de actividad física" },
-  { icon: "🥗", name: "Comer frutas y verduras" },
+  { icon: "🥗", name: "Alimentación Saludable" },
   { icon: "😴", name: "Dormir 7-8 horas" },
   { icon: "🚫", name: "Sin comida chatarra" },
   { icon: "🧘", name: "5 min de mindfulness" },
   { icon: "📵", name: "Sin pantallas 1h antes de dormir" },
   { icon: "📱", name: "Máx. 30 min en redes sociales" },
-  { icon: "🚶", name: "Moverse entre reuniones" },
+  { icon: "🚶", name: "Pausas Activas" },
   { icon: "🙏", name: "Reconocer 1 logro del día" },
 ];
 
@@ -846,6 +846,7 @@ function renderHabitos() {
       <td class="hab-td-actions">
         <button class="btn-action btn-hab-up" data-i="${i}" ${i === 0 ? "disabled" : ""}><i class="ti ti-chevron-up"></i></button>
         <button class="btn-action btn-hab-down" data-i="${i}" ${i === HABITS.length - 1 ? "disabled" : ""}><i class="ti ti-chevron-down"></i></button>
+        <button class="btn-action btn-hab-edit" data-i="${i}" title="Editar"><i class="ti ti-pencil"></i></button>
         <button class="btn-action btn-delete" data-i="${i}"><i class="ti ti-trash"></i></button>
       </td>
     </tr>`).join("");
@@ -895,6 +896,25 @@ function renderHabitos() {
         <button class="btn-green" id="do-add-habit" style="margin-top:1.25rem"><i class="ti ti-plus"></i> Agregar</button>
         <div class="auth-err" id="add-habit-err" style="min-height:18px;margin-top:8px"></div>
       </div>
+    </div>
+
+    <!-- Edit habit modal -->
+    <div id="edit-habit-modal" class="modal-bg" style="display:none">
+      <div class="modal-box" style="max-width:400px">
+        <div class="modal-hdr"><h2>Editar hábito</h2><button id="close-edit-habit"><i class="ti ti-x"></i></button></div>
+        <label>Ícono (emoji)</label>
+        <div class="emoji-picker-wrap">
+          <input id="edit-hab-icon" type="text" maxlength="4" style="width:80px;text-align:center;font-size:22px">
+          <div class="emoji-suggestions">
+            ${["🏋️","🚴","🥦","🍎","💤","🧴","📖","🎯","🏊","🤸","🧃","🦷","🌿","🎵","🧠","💪","🛌","🚿","✍️","🍵"]
+              .map(e => `<button class="emoji-opt-edit" data-e="${e}">${e}</button>`).join("")}
+          </div>
+        </div>
+        <label style="margin-top:14px">Nombre del hábito</label>
+        <input id="edit-hab-name" type="text" maxlength="60">
+        <button class="btn-green" id="do-edit-habit" style="margin-top:1.25rem"><i class="ti ti-check"></i> Guardar cambios</button>
+        <div class="auth-err" id="edit-habit-err" style="min-height:18px;margin-top:8px"></div>
+      </div>
     </div>`;
 
   document.getElementById("btn-add-habit").addEventListener("click", () => {
@@ -924,6 +944,40 @@ function renderHabitos() {
     showToast(`✓ Hábito "${name}" agregado`);
     renderHabitos();
   });
+  /* edit habit modal */
+  document.getElementById("close-edit-habit").addEventListener("click", () => {
+    document.getElementById("edit-habit-modal").style.display = "none";
+  });
+  document.getElementById("edit-habit-modal").addEventListener("click", function(e) {
+    if (e.target === this) this.style.display = "none";
+  });
+  pc.querySelectorAll(".emoji-opt-edit").forEach(btn => {
+    btn.addEventListener("click", () => { document.getElementById("edit-hab-icon").value = btn.dataset.e; });
+  });
+  pc.querySelectorAll(".btn-hab-edit").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = parseInt(btn.dataset.i);
+      document.getElementById("edit-hab-icon").value = HABITS[i].icon;
+      document.getElementById("edit-hab-name").value = HABITS[i].name;
+      document.getElementById("edit-habit-err").textContent = "";
+      document.getElementById("edit-habit-modal").dataset.i = i;
+      document.getElementById("edit-habit-modal").style.display = "flex";
+    });
+  });
+  document.getElementById("do-edit-habit").addEventListener("click", async () => {
+    const i    = parseInt(document.getElementById("edit-habit-modal").dataset.i);
+    const icon = document.getElementById("edit-hab-icon").value.trim();
+    const name = document.getElementById("edit-hab-name").value.trim();
+    const err  = document.getElementById("edit-habit-err");
+    if (!icon) { err.textContent = "Elige o pega un emoji."; return; }
+    if (!name || name.length < 3) { err.textContent = "Escribe un nombre válido."; return; }
+    HABITS[i] = { icon, name };
+    await saveHabits();
+    document.getElementById("edit-habit-modal").style.display = "none";
+    showToast(`✓ Hábito actualizado`);
+    renderHabitos();
+  });
+
   pc.querySelectorAll(".btn-hab-up").forEach(btn => {
     btn.addEventListener("click", async () => {
       const i = parseInt(btn.dataset.i);
