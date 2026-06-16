@@ -1147,3 +1147,58 @@ tr:hover td      { background: var(--gray-50); }
   .top-meta { display: none; }
   .top-pct  { font-size: 15px; }
 }
+
+/* ══════════════════════════════
+   GESTIONAR HÁBITOS
+══════════════════════════════ */
+.hab-manager {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+.hab-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.hab-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: .75rem;
+  border-top: 1px solid var(--gray-100);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.hab-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.hab-table th {
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gray-400);
+  border-bottom: 1px solid var(--gray-200);
+  background: var(--gray-50);
+}
+.hab-table td { padding: 10px 12px; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
+.hab-table tr:last-child td { border-bottom: none; }
+.hab-table tr:hover td { background: var(--gray-50); }
+.hab-td-icon { text-align: center; font-size: 22px; width: 60px; }
+.hab-td-name { text-align: left; font-size: 13px; color: var(--gray-900); }
+.hab-td-actions { text-align: center; white-space: nowrap; display: flex; gap: 4px; align-items: center; justify-content: center; }
+.btn-hab-up, .btn-hab-down { width: 28px; height: 28px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+.btn-hab-up:disabled, .btn-hab-down:disabled { opacity: .3; cursor: not-allowed; }
+.emoji-picker-wrap { margin-top: 6px; }
+.emoji-suggestions { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.emoji-opt {
+  width: 34px; height: 34px; font-size: 18px;
+  border: 1px solid var(--gray-200); border-radius: var(--radius-sm);
+  background: var(--white); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s, border-color .15s;
+}
+.emoji-opt:hover { background: var(--green-light); border-color: var(--green); }
