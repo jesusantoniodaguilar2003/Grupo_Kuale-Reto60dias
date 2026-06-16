@@ -473,6 +473,48 @@ function renderTracker() {
   });
   html += `</div></div>`;
 
+  /* ── Pausa Activa ── */
+  html += `<div class="mindfulness-section">
+    <h2><i class="ti ti-run"></i> Ejercicios de Pausa Activa</h2>
+    <p class="section-sub">Realiza esta rutina de 6 minutos para activar tu cuerpo durante la jornada</p>
+    <div class="cards-grid">`;
+
+  [
+    { num:"1", icon:"🔄", title:"Movilidad de cuello", time:"30 seg",
+      steps:["Inclina la cabeza hacia adelante y atrás","Gira suavemente a ambos lados","Realiza movimientos lentos y controlados"] },
+    { num:"2", icon:"💪", title:"Rotación de hombros", time:"30 seg",
+      steps:["Haz círculos hacia adelante durante 15 segundos","Haz círculos hacia atrás durante 15 segundos"] },
+    { num:"3", icon:"🙆", title:"Estiramiento de brazos y espalda", time:"30 seg",
+      steps:["Extiende ambos brazos al frente","Entrelaza las manos y empuja suavemente hacia adelante","Mantén 15 segundos y repite elevando los brazos sobre la cabeza"] },
+    { num:"4", icon:"🏋️", title:"Sentadillas", time:"1 minuto",
+      steps:["Realiza 10 a 15 sentadillas a ritmo moderado","Mantén la espalda recta y los pies separados al ancho de los hombros"] },
+    { num:"5", icon:"🚶", title:"Marcha en el lugar", time:"1 minuto",
+      steps:["Eleva ligeramente las rodillas","Balancea los brazos de forma natural","Mantén un ritmo cómodo"] },
+    { num:"6", icon:"👟", title:"Elevación de talones", time:"30 seg",
+      steps:["Ponte de pie","Eleva los talones y mantente en puntas por un segundo","Baja lentamente y repite"] },
+    { num:"7", icon:"🦵", title:"Estiramiento de piernas", time:"30 seg",
+      steps:["Apoya una pierna al frente","Inclina ligeramente el cuerpo hacia adelante","Mantén 15 segundos por cada pierna"] },
+    { num:"8", icon:"🌬️", title:"Respiración profunda", time:"30 seg",
+      steps:["Inhala por la nariz durante 4 segundos","Mantén el aire 2 segundos","Exhala lentamente por la boca durante 6 segundos"] },
+  ].forEach(e => {
+    html += `<div class="m-card">
+      <div class="m-card-header">
+        <div class="m-card-icon" style="position:relative">
+          ${e.icon}
+          <span style="position:absolute;top:-5px;right:-5px;width:16px;height:16px;border-radius:50%;background:var(--green);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center">${e.num}</span>
+        </div>
+        <div><div class="m-card-title">${e.title}</div><div class="m-card-time">${e.time}</div></div>
+      </div>
+      <ul style="list-style:none;padding:0;margin:0">
+        ${e.steps.map(s => `<li style="font-size:12px;color:var(--gray-600);padding:3px 0;display:flex;gap:6px;align-items:flex-start">
+          <span style="color:var(--green);font-weight:700;flex-shrink:0">·</span>${s}
+        </li>`).join("")}
+      </ul>
+    </div>`;
+  });
+
+  html += `</div></div>`;
+
   document.getElementById("page-content").innerHTML = html;
 
   document.getElementById("prev-week").addEventListener("click", () => { if (curWeek > 0) { curWeek--; renderTracker(); } });
@@ -885,7 +927,7 @@ function renderHabitos() {
         <div class="modal-hdr"><h2>Agregar hábito</h2><button id="close-add-habit"><i class="ti ti-x"></i></button></div>
         <label>Ícono (emoji)</label>
         <div class="emoji-picker-wrap">
-          <input id="hab-icon" type="text" placeholder="Pega un emoji: 🏋️" maxlength="4" style="width:80px;text-align:center;font-size:22px">
+          <input id="hab-icon" type="text" placeholder="Agrega un emoji: 🏋️" maxlength="4" style="width:80px;text-align:center;font-size:22px">
           <div class="emoji-suggestions">
             ${["🏋️","🚴","🥦","🍎","💤","🧴","📖","🎯","🏊","🤸","🧃","🦷","🌿","🎵","🧠","💪","🛌","🚿","✍️","🍵"]
               .map(e => `<button class="emoji-opt" data-e="${e}">${e}</button>`).join("")}
